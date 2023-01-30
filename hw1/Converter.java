@@ -12,8 +12,7 @@ public class Converter {
 	public static char getSymbol(long digit) {
 		if (digit >= 0 && digit <= 9) {
 			return (char)('0' + digit);
-		}
-		else {
+        } else {
 			return (char)('A' + (digit - 10));
 		}
 	}
@@ -21,8 +20,7 @@ public class Converter {
 	public static long getValue(char symbol) {
 		if (symbol >= '0' && symbol <= '9'){
 			return symbol - '0';
-		}
-		else {
+		} else {
 			return (symbol - 'A') + 10;
 		}
 	}
@@ -86,8 +84,7 @@ public class Converter {
 			if (i < number.length() - 1 && 
 				RomanNums.get(number.charAt(i)) < RomanNums.get(number.charAt(i + 1))) {
 				num -= RomanNums.get(number.charAt(i));
-			}
-			else {
+			} else {
 				num += RomanNums.get(number.charAt(i));
 			}
 		}
@@ -107,8 +104,8 @@ public class Converter {
 		System.out.println("199 in base 16 is " + from10(199));  // C7
 		System.out.println();
 		
-		System.out.println("11100101 from base 2 is " + to10(11100101, 2));    // 229
-		System.out.println("332 from base 4 is " + to10(332, 4));			     // 62
+		System.out.println("11100101 from base 2 is " + to10(11100101, 2));  // 229
+		System.out.println("332 from base 4 is " + to10(332, 4));			 // 62
 		System.out.println("121 from base 5 is " + to10(121, 5));  			 // 36
 		System.out.println("100 from base 7 is " + to10(100, 7));  			 // 49
 		System.out.println();

@@ -2,9 +2,9 @@
 #include <iostream>
 
 #define YEAR_BITS 0x0003
-#define CREDIT_BITS 0x0076
-#define DECLARED_BITS 0x0080
-#define GPA_BITS 0x2F00
+#define CREDIT_BITS 0x001F
+#define DECLARED_BITS 0x0001
+#define GPA_BITS 0x003F
 
 #define CREDIT_SHIFT 0x0002
 #define DECLARED_SHIFT 0x0007
@@ -23,43 +23,36 @@ typedef struct student {
         --year;
 
         information &= ~YEAR_BITS;
-        year &= YEAR_BITS;
         information |= year;
     }
 
     int get_credits() const {
-        return ((information & CREDIT_BITS) >> CREDIT_SHIFT) + 1;
+        return ((information & (CREDIT_BITS << CREDIT_SHIFT)) >> CREDIT_SHIFT) + 1;
     }
 
     void set_credits(int credits) {
         --credits;
 
-        information &= ~CREDIT_BITS;
-        credits <<= CREDIT_SHIFT;
-        credits &= CREDIT_BITS;
-        information |= credits;
+        information &= ~(CREDIT_BITS << CREDIT_SHIFT);
+        information |= (credits << CREDIT_SHIFT);
     }
 
     int get_declared() const {
-        return (information & DECLARED_BITS) >> DECLARED_SHIFT;
+        return (information & (DECLARED_BITS << DECLARED_SHIFT)) >> DECLARED_SHIFT;
     }
 
     void set_declared(int declared) {
-        information &= ~DECLARED_BITS;
-        declared <<= DECLARED_SHIFT;
-        declared &= DECLARED_BITS;
-        information |= declared;
+        information &= ~(DECLARED_BITS << DECLARED_SHIFT);
+        information |= (declared << DECLARED_SHIFT);
     }
 
     int get_gpa() const {
-        return (information & GPA_BITS) >> GPA_SHIFT;
+        return (information & (GPA_BITS << GPA_SHIFT)) >> GPA_SHIFT;
     }
 
     void set_gpa(int gpa) {
-        information &= ~GPA_BITS;
-        gpa <<= GPA_SHIFT;
-        gpa &= GPA_BITS;
-        information |= gpa;
+        information &= ~(GPA_BITS << GPA_SHIFT);
+        information |= (gpa << GPA_SHIFT);
     }
 
 private:
@@ -76,17 +69,17 @@ private:
 
 private:
     friend std::ostream& operator<<(std::ostream& os, const student& sd) {
-        os << sd.get_year() << '\n';
-        os << sd.get_credits() << '\n';
-        os << sd.get_declared() << '\n';
-        os << sd.get_gpa() << '\n';
+        os << "Year: " << sd.get_year() << '\n';
+        os << "Credits: " << sd.get_credits() << '\n';
+        os << (sd.get_declared() ? "Declared" : "Undeclared") << '\n';
+        os << "GPA: " << sd.get_gpa();
         return os;
     }
 } student_t;
 
 int main(int argc, char** argv) {
     student_t s;
-    s.set_year(2);
+    s.set_year(4);
     s.set_credits(32);
     s.set_declared(1);
     s.set_gpa(43);
