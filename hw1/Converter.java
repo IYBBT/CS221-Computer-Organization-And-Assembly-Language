@@ -26,42 +26,42 @@ public class Converter {
 	}
 
 	public static long from10(long number, int base) {
-		int power = 0;
-		long num = 0;
+		int power = 1;
+		long result = 0;
 		while (number > 0) {
-			num += Math.pow(10, power) * (number % base);
+			result += power * (number % base);
 			number /= base;
-			++power;
+			power *= 10;
 		}
-		return num;
+		return result;
 	}
 
 	public static String from10(long number) {
-		String num = "";
+		String result = "";
 		while (number > 0) {
-			num = getSymbol(number % 16) + num;
+			result = getSymbol(number % 16) + result;
 			number /= 16;
 		}
-		return num;
+		return result;
 	}
 
 	public static long to10(long number, int base) {
-		int power = 0;
-		long num = 0;
+		int power = 1;
+		long result = 0;
 		while (number > 0) {
-			num += Math.pow(base, power) * (number % 10);
+			result += Math.pow(base, power) * (number % 10);
 			number /= 10;
-			++power;
+			power *= base;
 		}
-		return num;
+		return result;
 	}
 
 	public static long to10(String number) {
-		int power = 0;
+		int power = 1;
 		long num = 0;
 		for (int i = 1; i <= number.length(); ++i) {
 			num += Math.pow(16, power) * getValue(number.charAt(number.length() - i));
-			++power;
+			power *= 16;
 		}
 		return num;
 	}

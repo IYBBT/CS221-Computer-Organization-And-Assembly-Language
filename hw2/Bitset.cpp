@@ -107,7 +107,7 @@ typedef struct Bitset
 
     bool isPow2()
     {
-        return !(bits & bits - 1);    // Compares the current number with the number preceding, if the current number is a power of 2 the bitwise & will return 0, otherwise it will return non-zero
+        return !(bits & (bits - 1));    // Compares the current number with the number preceding, if the current number is a power of 2 the bitwise & will return 0, otherwise it will return non-zero
     }
 
     void clearLast1()
@@ -156,62 +156,57 @@ private:
 
 int main(int argc, char** argv) 
 {
-#ifdef _WIN32 || _WIN64
-    system("cls");
-#else
-    system("clear");
-#endif
-    Bitset s(0x3F67);                                       // Set the bits to 16231, 0x3F67, 037547, 0b0011111101100111
+    Bitset s(0xC0DE);   // Set the bits to 16231, 0x3F67, 037547, 0b0011111101100111
 
-    std::cout << "None: " << s.none() << std::endl;         // Prints 1 if all the bits are 0, and 0 if at least one bit is a 1 
-    std::cout << "Any: " << s.any() << std::endl;           // Prints 1 if at least one of the bits is a 1, and 0 if all the bits are 0
-    std::cout << "All: " << s.all() << std::endl;           // Prints 1 if all the bits are 1, and 0 if at least one bit is a 0
-    std::cout << "Get index 3: " << s.get(3) << std::endl;  // Prints the state of the bit at the index
+    std::cout << "None: " << (s.none() ? "True" : "False") << std::endl;         // Prints 1 if all the bits are 0, and 0 if at least one bit is a 1 
+    std::cout << "Any: " << (s.any() ? "True" : "False") << std::endl;           // Prints 1 if at least one of the bits is a 1, and 0 if all the bits are 0
+    std::cout << "All: " << (s.all() ? "True" : "False") << std::endl;           // Prints 1 if all the bits are 1, and 0 if at least one bit is a 0
+    std::cout << "Get index 2: " << (s.get(2) ? "True" : "False") << std::endl;  // Prints the state of the bit at the index
 
     std::cout << "\nBitset: ";
-    s.print();                                              // Prints the bitset
+    s.print();  // Prints the bitset
 
     std::cout << "\nFlip: ";
-    s.flip();                                               // Flips the bits
-    s.print();                                              // Prints the flipped bitset
+    s.flip();   // Flips the bits
+    s.print();  // Prints the flipped bitset
     std::cout << "Flip back: ";
-    s.flip();                                               // Flips the bits back to the original state
-    s.print();                                              // Prints the original bitset
+    s.flip();   // Flips the bits back to the original state
+    s.print();  // Prints the original bitset
 
     std::cout << "\nSet index 8: ";
-    s.set(8);                                               // Sets the bit at 8
-    s.print();                                              // Prints the new bitset
+    s.set(8);   // Sets the bit at 8
+    s.print();  // Prints the new bitset
     std::cout << "Clear index 8: ";
-    s.clear(8);                                             // Clears the bit at 8
-    s.print();                                              // Prints the original bitset
+    s.clear(8); // Clears the bit at 8
+    s.print();  // Prints the original bitset
 
     std::cout << "\nSwap: ";
-    s.swap();                                               // Swaps the bytes
-    s.print();                                              // Prints the new bitset
+    s.swap();   // Swaps the bytes
+    s.print();  // Prints the new bitset
     std::cout << "Swap back: ";
-    s.swap();                                               // Swaps the bytes back
-    s.print();                                              // Prints the new bitset
+    s.swap();   // Swaps the bytes back
+    s.print();  // Prints the new bitset
     
     std::cout << "\nSwapHi: ";
-    s.swapHi();                                             // Swaps the high nibbles
-    s.print();                                              // Prints the new bitset
+    s.swapHi(); // Swaps the high nibbles
+    s.print();  // Prints the new bitset
     std::cout << "SwapHi back: ";
-    s.swapHi();                                             // Swaps the high nibbles back
-    s.print();                                              // Prints the original bitset
+    s.swapHi(); // Swaps the high nibbles back
+    s.print();  // Prints the original bitset
 
     std::cout << "\nSwapLo: ";
-    s.swapLo();                                             // Swaps the low nibbles
-    s.print();                                              // Prints the new bitset
+    s.swapLo(); // Swaps the low nibbles
+    s.print();  // Prints the new bitset
     std::cout << "SwapLo back: ";
-    s.swapLo();                                             // Swaps the low nibbles back
-    s.print();                                              // Prints the new bitset
+    s.swapLo(); // Swaps the low nibbles back
+    s.print();  // Prints the new bitset
 
-    std::cout << "\nCount: " << s.count() << std::endl;       // Counts the number of bits that are 1
+    std::cout << "\nCount: " << s.count() << std::endl; // Counts the number of bits that are 1
     std::cout << "Power of 2: " << s.isPow2() << std::endl; // Prints 1 if the bitset is a power of 2, and 0 otherwise
 
     std::cout << "\nClear last: ";
-    s.clearLast1();                                         // Clears the rightmost bit
-    s.print();                                              // Prints the new bitset
+    s.clearLast1(); // Clears the rightmost bit
+    s.print();  // Prints the new bitset
 
     return 0;
 }
