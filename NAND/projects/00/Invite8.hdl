@@ -1,0 +1,9 @@
+CHIP Invite8
+{
+	IN java[8], cpp[8], ds[8];
+    OUT invite[8];
+
+    PARTS:
+    Or8(a=java, b=cpp, out=lang);
+    And8(a=lang, b=ds, out=invite);
+}

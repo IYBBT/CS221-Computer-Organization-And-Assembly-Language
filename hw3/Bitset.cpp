@@ -2,17 +2,13 @@
 #include <iostream>
 #include <cassert>
 
-#define ZERO 0x0
-#define ONE 0x1
-#define TWO 0x2
-
 template<typename T>
 struct Bitset
 {
     
     Bitset()
     {
-        this->bits = (T)ZERO;
+        this->bits = (T)0;
     }
 
     Bitset(T bits)
@@ -27,7 +23,7 @@ struct Bitset
 
     bool none() const
     {
-        return !(bits | (T)ZERO);
+        return !(bits | (T)0);
     }
 
     bool any() const
@@ -37,58 +33,58 @@ struct Bitset
 
     bool all() const
     {
-        return !(bits ^ (T)~ZERO);
+        return !(bits ^ (T)~0);
     }
 
     void flip()
     {
-        bits = ~bits;
+        bits = bits ^ ((T)0 - 1);
     }
 
     bool get(int index) const
     {
-        T temp = bits >> index;
-        return temp & ONE;
+        T get_bit = bits >> index;
+        return get_bit & 1;
     }
 
     void set()
     {
-        bits |= (T)~ZERO;
+        bits |= (T)~0;
     }
 
     void set(int index)
     {
-        T temp = (T)ONE << index;
-        bits |= temp;
+        T set_bit = (T)1 << index;
+        bits |= set_bit;
     }
 
     void clear()
     {
-        bits &= (T)ZERO;
+        bits &= (T)0;
     }
 
     void clear(int index)
     {
-        T temp = ~((T)ONE << index);
-        bits &= temp;
+        T clear_bit = ~((T)1 << index);
+        bits &= clear_bit;
     }
 
     void swap()
     {
-        int half_size = width >> ONE;
-        T f = (bits & ((T)~ZERO >> half_size)) << half_size;
-        T s = (bits & ((T)~ZERO << half_size)) >> half_size;
-        bits = f | s;
+        int half_size = width >> 1;
+        T first = (bits & ((T)~0 >> half_size)) << half_size;
+        T second = (bits & ((T)~0 << half_size)) >> half_size;
+        bits = first | second;
     }
 
     void swapHi()
     {
-        int half_size = width >> ONE;
-        int quart_size = width >> TWO;
+        int half_size = width >> 1;
+        int quart_size = width >> 2;
 
-        T first = (bits & ((T)~ZERO >> half_size));
-        T second = (bits & ((T)~ZERO << half_size)) >> half_size;
-        T high_first = (second & ((T)~ZERO >> (half_size + quart_size)));
+        T first = (bits & ((T)~0 >> half_size));
+        T second = (bits & ((T)~0 << half_size)) >> half_size;
+        T high_first = (second & ((T)~0 >> (half_size + quart_size)));
         T high_second = (second ^ high_first) >> quart_size;
 
         high_first <<= quart_size;
@@ -98,12 +94,12 @@ struct Bitset
 
     void swapLo()
     {
-        int half_size = width >> ONE;
-        int quart_size = width >> TWO;
+        int half_size = width >> 1;
+        int quart_size = width >> 2;
 
-        T first = (bits & ((T)~ZERO >> half_size));
-        T second = (bits & ((T)~ZERO << half_size));
-        T low_first = (first & ((T)~ZERO >> (half_size + quart_size)));
+        T first = (bits & ((T)~0 >> half_size));
+        T second = (bits & ((T)~0 << half_size));
+        T low_first = (first & ((T)~0 >> (half_size + quart_size)));
         T low_second = (first ^ low_first) >> quart_size;
 
         low_first <<= quart_size;
@@ -123,41 +119,41 @@ struct Bitset
 
     int count() const
     {
-        T temp = bits;
+        T counting_bit = 1;
         int count = 0;
         for (int i = 0; i < width; ++i)
         {
-            if (temp & ONE)
+            if (counting_bit & bits)
             {
                 ++count;
             }
-            temp >>= ONE;
+            counting_bit <<= 1;
         }
 
         return count;
     }
 
-    // void printBinary() const
-    // {
-    //     std::string s;                          // Initializes the string
-    //     T temp = bits;                          // Creates a temporary variable set to the stored bits
-    //     while (s.size() < width)                // Iterates over the set
-    //     {
-    //         s = (char)(temp % TWO + '0') + s;   // If the bit is odd then the char added to the string will be 1, otherwise it will be 0
-    //         temp >>= ONE;                       // Divide the temporary variable by 2
-    //     }
-    //     std::cout << "0b" << s;                 // Print the string
-    // }
+    void printBinary() const
+    {
+        std::string s;                          // Initializes the string
+        T temp = bits;                          // Creates a temporary variable set to the stored bits
+        while (s.size() < width)                // Iterates over the set
+        {
+            s = (char)(temp % 2 + '0') + s;     // If the bit is odd then the char added to the string will be 1, otherwise it will be 0
+            temp >>= 1;                         // Divide the temporary variable by 2
+        }
+        std::cout << "0b" << s;                 // Print the string
+    }
 
-    // void print() const
-    // {
-    //     std::cout << "[" << std::dec << bits;   // Print the stored bits in decimal, hex, then octal
-    //     std::cout << ", 0x" << std::hex << bits;
-    //     std::cout << ", 0" << std::oct << bits;
-    //     std::cout << ", ";
-    //     printBinary();                          // Call to print the bits in binary
-    //     std::cout << "]\n";                     // End the output and add a newline
-    // }
+    void print() const
+    {
+        std::cout << "[" << std::dec << bits;   // Print the stored bits in decimal, hex, then octal
+        std::cout << ", 0x" << std::hex << bits;
+        std::cout << ", 0" << std::oct << bits;
+        std::cout << ", ";
+        printBinary();                          // Call to print the bits in binary
+        std::cout << "]\n";                     // End the output and add a newline
+    }
 
     bool operator==(const Bitset& rs) const
     {
@@ -257,8 +253,8 @@ std::ostream& operator<<(std::ostream& os, const Bitset<T>& bs)
     std::string s;                              // Initializes the string
     while (s.size() < sizeof(T)*8)              // Iterates over the set
     {
-        s = (char)(bits % TWO + '0') + s;       // If the bit is odd then the char added to the string will be 1, otherwise it will be 0
-        bits >>= ONE;                           // Divide the temporary variable by 2
+        s = (char)(bits % 2 + '0') + s;       // If the bit is odd then the char added to the string will be 1, otherwise it will be 0
+        bits >>= 1;                           // Divide the temporary variable by 2
     }
     os << "0b" << s;                            // Print the string
 

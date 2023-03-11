@@ -1,0 +1,9 @@
+CHIP Invite
+{
+	IN java, cpp, ds;
+    OUT invite;
+
+    PARTS:
+    Or(a=java, b=cpp, out=lang);
+    And(a=lang, b=ds, out=invite);
+}
